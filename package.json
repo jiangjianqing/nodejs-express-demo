@@ -1,0 +1,24 @@
+{
+  "name": "test",
+  "version": "1.0.0",
+  "description": "no description",
+  "main": "test.js",
+  "dependencies": {
+    "body-parser": "^1.14.1",
+    "connect-mongo": "^0.8.2",
+    "consolidate": "^0.13.1",
+    "cookie-parser": "^1.4.0",
+    "express": "^4.13.3",
+    "express-session": "^1.12.1",
+    "handlebars": "^4.0.5",
+    "hbs": "^4.0.0",
+    "mongoose": "^4.2.8",
+    "monk": "^1.0.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
