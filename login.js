@@ -1,3 +1,4 @@
+"use strict";
 var mongoose = require('mongoose');
 var user = require('./models/user').user;
 
@@ -14,21 +15,16 @@ var router=require('express').Router();
 		console.log(req.body)
 
 		var query_doc = {username: req.body.username, password: req.body.password};
-		(function(query){
-			user.find(query,function(err,doc){
-			//user.count(query,function(err,doc){
-				console.log(err);
-				console.log(doc);
-				if(doc.length>0){
-					req.session.user=doc;
-					req.session.err=null;
-					res.sendStatus(200);
-				}else{
-					req.session.err="用户名或密码不正确";
-					res.sendStatus(404);
-				}
-			});
-		})(query_doc);
+		user.findUser(query_doc,function(isFound){
+			if(isFound){
+				req.session.user=query_doc;
+				req.session.err=null;
+				res.sendStatus(200);
+			}else{
+				req.session.err="";
+				res.sendStatus(404);
+			};
+		});
 		/*
 		if(req.body.username==user.username&&req.body.password==user.password){
 			req.session.user=user;

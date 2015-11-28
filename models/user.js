@@ -7,7 +7,21 @@ var userSchema=mongoose.Schema({
 	password:String
 });//定义模型，但还未和users集合关联
 
-exports.user=mongoose.model('users',userSchema);//与users集合关联
+var userModel={
+	
+	user:mongoose.model('users',userSchema),//与users集合关联
+	
+	findUser:function(criteria,callback){
+		this.user.find(criteria,function(err,doc){
+			console.log(err);
+			console.log(doc);
+			callback(doc.length>0);
+		})	
+	}
+
+};
+
+exports.user=userModel;
 
 //var db=monk('localhost:27017/test-app');
 
