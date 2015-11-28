@@ -21,7 +21,7 @@ var router=require('express').Router();
 				req.session.err=null;
 				res.sendStatus(200);
 			}else{
-				req.session.err="";
+				req.session.err="用户名或密码不正确";
 				res.sendStatus(404);
 			};
 		});
