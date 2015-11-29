@@ -101,7 +101,16 @@ app.use(function(req,res,next){
 	console.log('\nhttp info:')
 	console.log("method:"+req.method+"===="+"url:"+req.url);
 	console.log("host:"+req.hostname+"====="+"path:"+req.path);
-	next();
+	
+	//登录验证
+	var url = req.originalUrl;
+	console.log("url=%s,user=%s",url,req.session.user);
+	if(url!="/login" && !req.session.user){
+		req.session.err="请先登录";
+		return res.redirect('login');
+	}else{
+		next();
+	}
 });
 
 app.all("*",function(req,res,next){
@@ -134,4 +143,11 @@ app.use(require("./login"));
 app.use(require("./home"));
 app.use(require("./logout"));
 
+//这段代码放在路由的最下端，也就是express模板找不到匹配的路由，就执行最下面的这个404中间件了。
+//一般而言中间价都是app.use();定义的，具体的你可以根据你自己的业务经行写，你也可以用来做运行日志。：)
+app.use(function(req,res){
+			res.render("404");
+				 });
+
 app.listen(9090);
+

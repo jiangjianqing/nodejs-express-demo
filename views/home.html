@@ -1,4 +1,11 @@
+<!DOCTYPE HTML>
 <html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+	<script src="http://cdn.bootcss.com/jquery/2.1.4/jquery.js"></script>
+	<script src="http://cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+</head>
 <body>
     <div style="height:400px;width:550px;margin:50px auto;margin-left:auto;border:solid 1px;background: rgb(246, 246, 253);">
 		<div style="margin-left: 45px;">
@@ -8,10 +15,20 @@
 				{{user.username}}登录成功					     
 										    # 登陆成功！
 				<div style="margin-top: 145px;">
-				<input value="退 出" type="button">
+				<input id="btnQuit" value="退 出" type="button">
 				</div>
 			</form>
 		</div>
 	</div>
 </body>
+<script>
+	(function($){
+
+		$('#btnQuit').on('click',function(){
+			console.log('abc');
+			location.href='/logout';
+			});
+
+	})(jQuery);
+</script>
 </html>
