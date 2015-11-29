@@ -107,7 +107,7 @@ app.use(function(req,res,next){
 	console.log("url=%s,user=%s",url,req.session.user);
 	if(url!="/login" && !req.session.user){
 		req.session.err="请先登录";
-		return res.redirect('login');
+		return res.redirect('/login');
 	}else{
 		next();
 	}
