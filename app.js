@@ -144,9 +144,9 @@ app.get('/',function(req,res){
 });
 
 
-app.use(require("./login"));
-app.use(require("./home"));
-app.use(require("./logout"));
+app.use(require("./routes/login"));
+app.use(require("./routes/home"));
+app.use(require("./routes/logout"));
 
 //这段代码放在路由的最下端，也就是express模板找不到匹配的路由，就执行最下面的这个404中间件了。
 //一般而言中间价都是app.use();定义的，具体的你可以根据你自己的业务经行写，你也可以用来做运行日志。：)

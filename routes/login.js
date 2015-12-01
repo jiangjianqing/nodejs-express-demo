@@ -1,6 +1,6 @@
 "use strict";
 var mongoose = require('mongoose');
-var user = require('./models/user').user;
+var user = require('../models/user').user;
 
 mongoose.connect('mongodb://localhost/test-app');
 
