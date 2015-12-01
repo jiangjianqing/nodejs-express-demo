@@ -1,4 +1,7 @@
 var express=require('express');
+var path = require('path');
+//var favicon = require('serve-favicon');
+var logger = require('morgan');
 var cookieParser=require('cookie-parser');
 var session=require('express-session');
 var MongoStore=require('connect-mongo')(session);
@@ -16,6 +19,8 @@ var app=express();
 
 var bodyParser=require('body-parser');
 //var multer=require('multer');
+
+app.use(logger('dev'));
 
 //middleware body-parser和multer用于处理和解析post请求的数据
 app.use(bodyParser.json());
@@ -66,7 +71,11 @@ app.use(session({
 }));
 
 //设定静态资源目录
-app.use(express.static(require('path').join(__dirname, 'static')));
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(require('less-middleware')(path.join(__dirname, 'public')));
+// uncomment after placing your favicon in /public
+//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+
 
 //修改模板文件的后缀名为html
 app.set("view engine",'html');
@@ -96,15 +105,15 @@ app.use(function(req,res,next){
 		res.cookie('isVisit',1,{maxAge:60*1000});
 		console.log('欢迎第一次访问');
 	}
-	console.log("cookies:\n");
+	console.log("\ncookies:");
 	console.log(req.cookies);
-	console.log('\nhttp info:')
-	console.log("method:"+req.method+"===="+"url:"+req.url);
-	console.log("host:"+req.hostname+"====="+"path:"+req.path);
+	//console.log('\nhttp info:')
+	//console.log("method:"+req.method+"===="+"url:"+req.url);
+	//console.log("host:"+req.hostname+"====="+"path:"+req.path);
 	
 	//登录验证
 	var url = req.originalUrl;
-	console.log("url=%s,user=%s",url,req.session.user);
+	//console.log("url=%s,user=%s",url,req.session.user);
 	if(url!="/login" && !req.session.user){
 		req.session.err="请先登录";
 		return res.redirect('/login');
@@ -123,19 +132,15 @@ app.all("*",function(req,res,next){
 app.get('/',function(req,res){
 	//通过req.query获取get请求路径的对象参数值。
 	//格式：req.query.参数名；
-	if(req.query.n){
-		console.log("n参数=%s",req.query.n);
-	};
+	//if(req.query.n){
+	//	console.log("n参数=%s",req.query.n);
+	//};
 	//res.sendStatus(200);//发送状态码
 	//res.send("欢迎来到首页");
 	//response跳转
 	//res.redirect("http://www.hubwiz.com");
 	//res.redirect("login");
 	res.render('index');
-});
-
-app.get('/index',function(req,res){
-	res.render("index");	
 });
 
 
@@ -145,9 +150,38 @@ app.use(require("./logout"));
 
 //这段代码放在路由的最下端，也就是express模板找不到匹配的路由，就执行最下面的这个404中间件了。
 //一般而言中间价都是app.use();定义的，具体的你可以根据你自己的业务经行写，你也可以用来做运行日志。：)
-app.use(function(req,res){
-			res.render("404");
-				 });
 
-app.listen(9090);
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+  var err = new Error('Not Found');
+  err.status = 404;
+  next(err);
+});
 
+// error handlers
+
+// development error handler
+// will print stacktrace
+if (app.get('env') === 'development') {
+  app.use(function(err, req, res, next) {
+    res.status(err.status || 500);
+    res.render('error', {
+      message: err.message,
+      error: err
+    });
+  });
+}
+
+// production error handler
+// no stacktraces leaked to user
+app.use(function(err, req, res, next) {
+  res.status(err.status || 500);
+  res.render('error', {
+    message: err.message,
+    error: {}
+  });
+});
+
+
+module.exports = app;
+//app.listen(9090);
